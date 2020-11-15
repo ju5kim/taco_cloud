@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{ // 컨피큐�
 //		//JDBC,LDAP,커스텀 등으로 사용자와 인증 정보를 구성할 수 있다.
 //		auth.jdbcAuthentication()
 //		.dataSource(dataSource);
+/*		
 		//사용자 정의 테이블을 사용할 수는 있지만 매개변수는 하나이고 컬럼의 이름과 타입을 맞추어주어야한다.
 		auth.jdbcAuthentication()
 		.dataSource(dataSource)
@@ -38,7 +39,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{ // 컨피큐�
 		("select username, authority from authorities"+"where username=?")
 //		.passwordEncoder(new BCryptPasswordEncoder()); // 비밀번호 암호화
 		.passwordEncoder(new NoEncodingPasswordEncoder()); //DB값으로 로그인이 되는지 확인하기 위해 암호화를 끄는 메서드
-		
+*/
+		auth.ldapAuthentication()
+		.userSearchBase("ou=people")
+			.userSearchFilter("(uid-{0})")
+		.groupSearchBase("ou=groups")
+			.groupSearchFilter("member={0}")
+		.contextSource()
+			.root("dc=tacocloud,dc=com")
+			.ldif("classpath:users.ldif")
+		.and()
+		.passwordCompare()
+			.passwordEncoder(new BCryptPasswordEncoder())
+			.passwordAttribute("userPasscode");
 	}
 
 	@Override
