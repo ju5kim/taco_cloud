@@ -1,5 +1,8 @@
 package tacos.security;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -7,17 +10,24 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{ // 컨피큐레이션 어댑터?
-
-	@Override
+	
+	@Autowired
+	DataSource dataSource;
+	
+	@Override 
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication()
-		.withUser("user1") // 해당 유저에게 
-			.password("{noop}password1") // 비밀번호
-			.authorities("ROLE_USER") // 권한을 부여
-		.and()
-		.withUser("user2")
-			.password("{noop}password2")
-			.authorities("ROLE_USER");
+//		auth.inMemoryAuthentication()
+//		.withUser("user1") // 해당 유저에게 
+//			.password("{noop}password1") // 비밀번호
+//			.authorities("ROLE_USER") // 권한을 부여
+//		.and()
+//		.withUser("user2")
+//			.password("{noop}password2")
+//			.roles("USER"); // 위와 같은 것임
+//		//여기서는 인메모리 사용자를 활용해서 인증정보를 구성하였다.
+//		//JDBC,LDAP,커스텀 등으로 사용자와 인증 정보를 구성할 수 있다.
+		auth.jdbcAuthentication()
+		.dataSource(dataSource);
 	}
 
 	@Override
