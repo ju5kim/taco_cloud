@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
@@ -30,6 +31,9 @@ public class Order implements Serializable{
 	private Long id;
     
 	private Date placedAt;
+	
+	@ManyToOne
+	private User user; // 이게 포링키 같은 거고 oder객체와 user객체를 연결하기 위한 필드
 	
 	
 	@NotBlank(message="Name is required")

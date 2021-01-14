@@ -1,3 +1,4 @@
+
 drop table if exists users;
 drop table if exists authorities;
 drop index if exists ix_auth_username;
